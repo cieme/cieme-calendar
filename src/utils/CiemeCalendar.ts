@@ -81,7 +81,6 @@ export class CiemeCalendar {
     }
   }
   genTableBody() {
-    const _this = this;
     const tbody = document.createElement("tbody");
     this.cellList = [];
     this.genList();
@@ -104,28 +103,27 @@ export class CiemeCalendar {
           cellDiv.innerText = date.format("DD");
           td.appendChild(cellDiv);
           tr.appendChild(td);
-          cellDiv.addEventListener("click", () => {
-            const hasValue = this.value.some((value) => {
-              return dayjs(value).isSame(date);
-            });
-            if (hasValue) {
-              const index = this.value.indexOf(
-                date.format("YYYY-MM-DD HH:mm:ss"),
-              );
-              if (index > -1) {
-                this.value.splice(index, 1);
-              }
-            } else {
-              this.value.push(date.format("YYYY-MM-DD HH:mm:ss"));
-            }
-            _this.change();
-          });
+          cellDiv.addEventListener("click", () => this.onCellClick(date));
           this.cellList.push(cellDiv);
         }
       });
       tbody.appendChild(tr);
     });
     return tbody;
+  }
+  onCellClick(date) {
+    const hasValue = this.value.some((value) => {
+      return dayjs(value).isSame(date);
+    });
+    if (hasValue) {
+      const index = this.value.indexOf(date.format("YYYY-MM-DD HH:mm:ss"));
+      if (index > -1) {
+        this.value.splice(index, 1);
+      }
+    } else {
+      this.value.push(date.format("YYYY-MM-DD HH:mm:ss"));
+    }
+    this.change();
   }
   splitList() {
     const { list } = this;
