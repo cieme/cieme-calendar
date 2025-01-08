@@ -1,25 +1,26 @@
 import * as dayjs from "dayjs";
 import { ciemeTable, cell, isActive } from "@/styles/base.module.scss";
 
+const defaultOptions = {
+  selector: "",
+  format: "YYYY-MM-DD",
+  cellFormat: "DD",
+  separator: ",",
+  onChange: () => {},
+};
+interface IOptions {
+  selector: string | HTMLElement;
+  format?: string;
+  cellFormat?: string;
+  separator?: string;
+  onChange?: (value: string[]) => void;
+}
 export class CiemeCalendar {
   _dayjs = dayjs;
-  _formatStr = "YYYY-MM-DD HH:mm:ss";
   /**
-   * 参数传进来的时间
+   * 参数传进来的时间,转为 dayjs 对象
    */
   _date;
-  /**
-   * 月开始
-   */
-  strMap = {
-    "1": "一",
-    "2": "二",
-    "3": "三",
-    "4": "四",
-    "5": "五",
-    "6": "六",
-    "7": "日",
-  };
   get _monthStarDate() {
     return this._date.startOf("month");
   }
@@ -27,21 +28,49 @@ export class CiemeCalendar {
     return dayjs(this._date).endOf("month");
   }
   get _monthStarDateFormat() {
-    return this._monthStarDate.format(this._formatStr);
+    return this._monthStarDate.format(this._options.format);
   }
   get _monthEndDateFormat() {
-    return this._monthEndDate.format(this._formatStr);
+    return this._monthEndDate.format(this._options.format);
   }
-  dom: HTMLDivElement = null;
-
-  constructor(dom: HTMLDivElement, date: Date | string = new Date()) {
-    this.dom = dom;
-    this.update(dom, date);
+  dom: Element = null;
+  _options;
+  constructor(_options: IOptions = defaultOptions) {
+    this._options = { ...defaultOptions, ..._options };
+    const { date } = this._options;
+    this._date = dayjs(date);
+    this.getDom();
+    this.update(date);
+  }
+  // 处理 dom
+  getDom() {
+    const { selector } = this._options;
+    if (selector) {
+      if (selector instanceof Element) {
+        this.dom = selector;
+      } else {
+        this.dom = document.querySelector(selector);
+      }
+    } else {
+      this.dom = document.createElement("div");
+      document.body.appendChild(this.dom);
+    }
   }
 
-  update(dom: HTMLDivElement, date) {
+  update(date) {
+    this.dispose();
     this._date = dayjs(date);
     this.genTable();
+    this.updateActive();
+  }
+  dispose() {
+    this.dom.innerHTML = "";
+    this.cellList = [];
+    this.list = [];
+  }
+  destroy() {
+    this.dispose();
+    this.dom = null;
   }
   genTable() {
     const header = this.genTableHeader();
@@ -100,7 +129,7 @@ export class CiemeCalendar {
           const cellDiv = document.createElement("div");
           cellDiv.className = cell;
           cellDiv.dataset._date = date;
-          cellDiv.innerText = date.format("DD");
+          cellDiv.innerText = date.format(this._options.cellFormat);
           td.appendChild(cellDiv);
           tr.appendChild(td);
           cellDiv.addEventListener("click", () => this.onCellClick(date));
@@ -116,14 +145,15 @@ export class CiemeCalendar {
       return dayjs(value).isSame(date);
     });
     if (hasValue) {
-      const index = this.value.indexOf(date.format("YYYY-MM-DD HH:mm:ss"));
+      const index = this.value.findIndex((item) => dayjs(item).isSame(date));
       if (index > -1) {
         this.value.splice(index, 1);
       }
     } else {
-      this.value.push(date.format("YYYY-MM-DD HH:mm:ss"));
+      console.log(this._options);
+      this.value.push(date.format(this._options.format));
     }
-    this.change();
+    this.emitChange();
   }
   splitList() {
     const { list } = this;
@@ -156,7 +186,8 @@ export class CiemeCalendar {
       }
     });
   }
-  change() {
+  emitChange() {
     this.updateActive();
+    this._options.onChange(this.value);
   }
 }

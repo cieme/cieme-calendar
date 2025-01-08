@@ -31,7 +31,7 @@ const config = {
   },
   module: {
     parser: {
-      'css/auto': {
+      "css/auto": {
         namedExports: false,
       },
     },
@@ -114,7 +114,8 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
-      inject: "body",
+      // inject: "body",
+      inject: "head",
       filename: "index.html",
       minify: true,
       scriptLoading: "defer",
@@ -122,6 +123,7 @@ const config = {
       title: "Webpack App",
       meta: {},
       chunks: ["index"],
+      scriptLoading: "blocking",
     }),
     new VueLoaderPlugin(),
   ],

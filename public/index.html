@@ -1,14 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>CiemeCalendar</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1123</title>
-</head>
-
-<body>
-
-</body>
-
+  <body>
+    <select onchange="onChange(event)">
+      <option value="2025-01">2025-01-01</option>
+      <option value="2025-02">2025-02-01</option>
+      <option value="2025-03-01">2025-03-01</option>
+      <option
+        value="2025-04-01"
+        selected>
+        2025-04-01
+      </option>
+    </select>
+    <textarea id="textareaDom"></textarea>
+    <div id="cieme-calendar"></div>
+    <script>
+      function onChange(e) {
+        const date = e.target.value; // 2025-01-01
+        instance.update(date); // 更新月份 可以是 YYYY-MM 或者 YYYY-MM-DD
+      }
+      const instance = new CiemeCalendar.CiemeCalendar({
+        selector: "#cieme-calendar", // 可以是 dom 或者 #id
+        format: "YYYY-MM-DD", // default is "YYYY-MM-DD"
+        cellFormat: "DD", // default is "DD"
+        separator: ",", // default is ","
+        onChange: (value) => {
+          const valuesStr = value.join(",");
+          console.log(valuesStr);
+          textareaDom.value = valuesStr;
+        },
+      });
+      // 销毁内存，释放资源，不再使用时调用
+      // console.log(instance.destroy())
+      /* 设置初始值值 */
+      instance.setValue("2025-01-01,2025-01-10");
+    </script>
+  </body>
 </html>
