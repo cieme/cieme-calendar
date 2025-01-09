@@ -1,5 +1,11 @@
 import * as dayjs from "dayjs";
-import { ciemeTable, cell, isActive } from "@/styles/base.module.scss";
+import {
+  ciemeTable,
+  cell,
+  isActive,
+  captionTitle,
+  ciemeCalendar
+} from "@/styles/base.module.scss";
 
 const defaultOptions = {
   selector: "",
@@ -76,12 +82,18 @@ export class CiemeCalendar {
     const header = this.genTableHeader();
     const body = this.genTableBody();
     const table = document.createElement("table");
+    const ciemeCalendarDom = document.createElement("div")
+    ciemeCalendarDom.classList.add(ciemeCalendar);
     table.className = ciemeTable;
+    const title = this.genTableTitle();
+    ciemeCalendarDom.appendChild(title);
     table.appendChild(header);
     table.appendChild(body);
-    this.dom.appendChild(table);
+    ciemeCalendarDom.appendChild(table)
+    this.dom.appendChild(ciemeCalendarDom);
   }
   genTableHeader() {
+    const tHeader = document.createElement("thead");
     const header = document.createElement("tr");
     const ths = ["日", "一", "二", "三", "四", "五", "六"];
     ths.forEach((th) => {
@@ -93,7 +105,8 @@ export class CiemeCalendar {
       thNode.appendChild(cellDiv);
       header.appendChild(thNode);
     });
-    return header;
+    tHeader.appendChild(header);
+    return tHeader;
   }
   list = [];
   cellList = [];
@@ -108,6 +121,16 @@ export class CiemeCalendar {
       this.list.push(current);
       current = current.add(1, "day");
     }
+  }
+  genTableTitle() {
+    const date = this._date;
+    const caption = document.createElement("h2");
+    caption.classList.add(captionTitle);
+    const cellDiv = document.createElement("div");
+    cellDiv.classList.add(cell);
+    cellDiv.innerText = date.format("YYYY 年 MM 月");
+    caption.appendChild(cellDiv);
+    return caption;
   }
   genTableBody() {
     const tbody = document.createElement("tbody");
