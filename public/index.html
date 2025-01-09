@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0" />
-    <title>CiemeCalendar</title>
-  </head>
 
-  <body>
-    <select onchange="onChange(event)">
-      <option value="2025-01">2025-01-01</option>
-      <option value="2025-02">2025-02-01</option>
-      <option value="2025-03-01">2025-03-01</option>
-      <option
-        value="2025-04-01"
-        selected>
-        2025-04-01
-      </option>
-    </select>
-    <textarea id="textareaDom"></textarea>
-    <div id="cieme-calendar"></div>
-    <script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= htmlRspackPlugin.options.title %>
+  </title>
+</head>
+
+<body>
+  <select onchange="onChange(event)">
+    <option value="2025-01">2025-01-01</option>
+    <option value="2025-02">2025-02-01</option>
+    <option value="2025-03-01">2025-03-01</option>
+    <option value="2025-04-01" selected>
+      2025-04-01
+    </option>
+  </select>
+  <textarea id="textareaDom"></textarea>
+  <div id="cieme-calendar"></div>
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
       function onChange(e) {
         const date = e.target.value; // 2025-01-01
         instance.update(date); // 更新月份 可以是 YYYY-MM 或者 YYYY-MM-DD
@@ -33,7 +33,6 @@
         separator: ",", // default is ","
         onChange: (value) => {
           const valuesStr = value.join(",");
-          console.log(valuesStr);
           textareaDom.value = valuesStr;
         },
       });
@@ -41,6 +40,8 @@
       // console.log(instance.destroy())
       /* 设置初始值值 */
       instance.setValue("2025-01-01,2025-01-10");
-    </script>
-  </body>
+    })
+  </script>
+</body>
+
 </html>

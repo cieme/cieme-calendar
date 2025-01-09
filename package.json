@@ -1,32 +1,29 @@
 {
+  "name": "rspack-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "rspack serve --config rspack.development.js",
-    "build": "rspack build --config rspack.production.js",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
+    "dev": "rspack serve --config rspack.development.ts",
+    "build": "rspack build --config rspack.production.ts"
   },
-  "dependencies": {
-    "dayjs": "^1.11.13",
-    "lodash-es": "^4.17.21",
-    "pinia": "^2.3.0",
-    "pixi.js": "^8.5.2",
-    "uuid": "^11.0.3",
-    "vue": "^3.5.13"
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "@rspack/cli": "^1.1.0",
-    "@rspack/core": "^1.1.0",
+    "@rspack/cli": "^1.1.8",
+    "@rspack/core": "^1.1.8",
     "css-loader": "^7.1.2",
-    "eslint": "^9.17.0",
-    "eslint-plugin-vue": "^9.32.0",
-    "globals": "^15.14.0",
-    "html-webpack-plugin": "^5.6.3",
-    "sass-embedded": "^1.83.0",
+    "esbuild": "^0.24.2",
+    "esbuild-register": "^3.6.0",
+    "sass-embedded": "^1.83.1",
     "sass-loader": "^16.0.4",
     "style-loader": "^4.0.0",
-    "typescript-eslint": "^8.18.1",
-    "vue-loader": "^17.4.2",
-    "vue-style-loader": "^4.1.3",
+    "ts-checker-rspack-plugin": "^1.1.0",
+    "ts-node": "^10.9.2",
     "webpack-merge": "^6.0.1"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13"
   }
 }

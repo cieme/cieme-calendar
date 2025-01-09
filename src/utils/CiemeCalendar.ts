@@ -1,12 +1,6 @@
 import * as dayjs from "dayjs";
-import {
-  ciemeTable,
-  cell,
-  isActive,
-  captionTitle,
-  ciemeCalendar
-} from "@/styles/base.module.scss";
-
+import * as style from "@/styles/base.module.scss";
+console.log(style);
 const defaultOptions = {
   selector: "",
   format: "YYYY-MM-DD",
@@ -82,14 +76,14 @@ export class CiemeCalendar {
     const header = this.genTableHeader();
     const body = this.genTableBody();
     const table = document.createElement("table");
-    const ciemeCalendarDom = document.createElement("div")
-    ciemeCalendarDom.classList.add(ciemeCalendar);
-    table.className = ciemeTable;
+    const ciemeCalendarDom = document.createElement("div");
+    ciemeCalendarDom.classList.add(style.ciemeCalendar);
+    table.className = style.ciemeTable;
     const title = this.genTableTitle();
     ciemeCalendarDom.appendChild(title);
     table.appendChild(header);
     table.appendChild(body);
-    ciemeCalendarDom.appendChild(table)
+    ciemeCalendarDom.appendChild(table);
     this.dom.appendChild(ciemeCalendarDom);
   }
   genTableHeader() {
@@ -100,7 +94,7 @@ export class CiemeCalendar {
       const thNode = document.createElement("th");
 
       const cellDiv = document.createElement("div");
-      cellDiv.className = cell;
+      cellDiv.className = style.cell;
       cellDiv.innerText = th;
       thNode.appendChild(cellDiv);
       header.appendChild(thNode);
@@ -125,9 +119,9 @@ export class CiemeCalendar {
   genTableTitle() {
     const date = this._date;
     const caption = document.createElement("h2");
-    caption.classList.add(captionTitle);
+    caption.classList.add(style.captionTitle);
     const cellDiv = document.createElement("div");
-    cellDiv.classList.add(cell);
+    cellDiv.classList.add(style.cell);
     cellDiv.innerText = date.format("YYYY 年 MM 月");
     caption.appendChild(cellDiv);
     return caption;
@@ -150,7 +144,7 @@ export class CiemeCalendar {
         } else {
           const td = document.createElement("td");
           const cellDiv = document.createElement("div");
-          cellDiv.className = cell;
+          cellDiv.className = style.cell;
           cellDiv.dataset._date = date;
           cellDiv.innerText = date.format(this._options.cellFormat);
           td.appendChild(cellDiv);
@@ -197,15 +191,15 @@ export class CiemeCalendar {
     this.updateActive();
   }
   updateActive() {
-    this.cellList.forEach((cell) => {
-      const date = cell.dataset._date;
+    this.cellList.forEach((cellItem) => {
+      const date = cellItem.dataset._date;
       const isActiveDate = this.value.some((item) => {
         return dayjs(item).startOf("day").isSame(date); // 注意此处需要对 date 格式进行匹配，保证 value 和 date 格式一致，可以采用 dayjs 库提供的 isSame 方法
       });
       if (isActiveDate) {
-        cell.classList.add(isActive);
+        cellItem.classList.add("is-active");
       } else {
-        cell.classList.remove(isActive);
+        cellItem.classList.remove("is-active");
       }
     });
   }
