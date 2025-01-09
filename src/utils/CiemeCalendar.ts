@@ -1,6 +1,17 @@
 import * as dayjs from "dayjs";
-import * as style from "@/styles/base.module.scss";
-console.log(style);
+import {
+  ciemeCalendar,
+  ciemeTable,
+  cell,
+  captionTitle,
+} from "@/styles/base.module.scss";
+
+const style = {
+  ciemeCalendar,
+  ciemeTable,
+  cell,
+  captionTitle,
+};
 const defaultOptions = {
   selector: "",
   format: "YYYY-MM-DD",

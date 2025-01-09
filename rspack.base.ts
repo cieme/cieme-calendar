@@ -75,6 +75,20 @@ const config: Configuration = {
         test: /\.(sass|scss)$/,
         use: [
           {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                mode: "global",
+                namedExport: true,
+                localIdentName: "[hash:5]",
+                // localIdentName: "[name]_[local]_[hash:5]",
+              },
+            },
+          },
+          {
             loader: "sass-loader",
             options: {
               // 同时使用 `modern-compiler` 和 `sass-embedded` 可以显著提升构建性能
@@ -84,7 +98,7 @@ const config: Configuration = {
             },
           },
         ],
-        type: "css/auto",
+        type: "javascript/auto",
       },
     ],
   },
