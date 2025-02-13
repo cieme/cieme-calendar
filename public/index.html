@@ -10,18 +10,21 @@
 </head>
 
 <body>
-  <select onchange="onChange(event)">
+  <select>
     <option value="2025-01">2025-01-01</option>
-    <option value="2025-02">2025-02-01</option>
+    <option value="2025-02" selected>2025-02-01</option>
     <option value="2025-03-01">2025-03-01</option>
-    <option value="2025-04-01" selected>
+    <option value="2025-04-01">
       2025-04-01
     </option>
   </select>
   <textarea id="textareaDom"></textarea>
   <div id="cieme-calendar"></div>
   <script>
+    const disableDate = ['2025-02-01', '2025-02-02']
     window.addEventListener("DOMContentLoaded", function () {
+      const select = document.querySelector('select');
+      select.addEventListener("change", onChange)
       function onChange(e) {
         const date = e.target.value; // 2025-01-01
         instance.update(date); // 更新月份 可以是 YYYY-MM 或者 YYYY-MM-DD
@@ -35,6 +38,12 @@
           const valuesStr = value.join(",");
           textareaDom.value = valuesStr;
         },
+        disabledHandle: (date) => {
+          if (disableDate.includes(date.format('YYYY-MM-DD'))) {
+            return false
+          }
+          return true
+        }
       });
       // 销毁内存，释放资源，不再使用时调用
       // console.log(instance.destroy())

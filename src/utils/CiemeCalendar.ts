@@ -12,20 +12,25 @@ const style = {
   cell,
   captionTitle,
 };
-const defaultOptions = {
-  selector: "",
-  format: "YYYY-MM-DD",
-  cellFormat: "DD",
-  separator: ",",
-  onChange: () => {},
-};
+
 interface IOptions {
   selector: string | HTMLElement;
   format?: string;
   cellFormat?: string;
   separator?: string;
   onChange?: (value: string[]) => void;
+  disabledHandle?: (value: string[]) => void;
 }
+const defaultOptions: IOptions = {
+  selector: "",
+  format: "YYYY-MM-DD",
+  cellFormat: "DD",
+  separator: ",",
+  onChange: () => {},
+  disabledHandle: (date) => {
+    return true;
+  },
+};
 export class CiemeCalendar {
   _dayjs = dayjs;
   /**
@@ -160,7 +165,14 @@ export class CiemeCalendar {
           cellDiv.innerText = date.format(this._options.cellFormat);
           td.appendChild(cellDiv);
           tr.appendChild(td);
-          cellDiv.addEventListener("click", () => this.onCellClick(date));
+          if (this._options.disabledHandle(date)) {
+            cellDiv.addEventListener("click", () => {
+              this.onCellClick(date);
+            });
+          } else {
+            cellDiv.classList.add("disabled");
+          }
+
           this.cellList.push(cellDiv);
         }
       });
@@ -178,7 +190,6 @@ export class CiemeCalendar {
         this.value.splice(index, 1);
       }
     } else {
-      console.log(this._options);
       this.value.push(date.format(this._options.format));
     }
     this.emitChange();

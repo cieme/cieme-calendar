@@ -107,7 +107,7 @@ const config: Configuration = {
   },
   plugins: [
     new rspack.HtmlRspackPlugin({
-      title: "RSPACK",
+      title: "Demo",
       template: "./public/index.html",
       scriptLoading: "blocking",
     }),
